@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document Finder</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet"> 
+    <style>
+        *{
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-color: #8aacbe;
+        }
+        p{
+            text-align: center;
+            font-size: 20px;
+            color: black;
+            margin-top:90px;
+        }
+        select{
+            padding: 5px 8px;
+            font-size: 16px;
+            font-weight: 550;
+        }
+        input{
+            width:70%;
+            padding: 5px 8px;
+            margin-left :9px;
+            font-size: 16px;
+            color: black;
+            border:1px solid black;
+        }
+        button{
+            width:200px;
+            height:34px;
+            background-color:rgb(102, 168, 102);
+            color:white;
+            border: 1px solid #000;
+            font-size: 18px;
+            margin-left:9px;
+            font-weight: 550;
+        }
+        table{
+            color:black;
+            width:100%;
+            border : 1px solid #aaa;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        th,td{
+            border: 1px solid #aaa;
+            padding: 15px 15px;
+        }
+        .key{
+            vertical-align: text-top;
+            text-align:center;
+            font-weight:550;
+        }
+        .value{
+            vertical-align: text-top;
+            text-align:left;
+        }
+        .show-data{
+            margin: 0px 86px;
+        }
+        th{
+            font-weight:550;
+        }
+        h1{
+            padding:15px;
+            margin:0px;
+            text-align: center;
+            background: #8aacbe;
+            color: white;
+            font-size: 45px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            font-family: 'Staatliches', cursive;
+            -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: black;
+            text-shadow:
+            3px 3px 0 #000,
+            -1px -1px 0 #000,  
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+            1px 1px 0 #000;
+
+        }
+    </style>
+</head>
+<script>
+    function myFunction() {
+        var text1= $("#text1").val();
+        var category= $("#category").val();
+        $.ajax({
+            url: "/join",
+            type: "POST",
+            data:{
+                    text1:text1,
+                    category:category
+            }       
+        }).done(function(response){            
+            table = "<table>"; 
+            table+="<tr>";
+            table+="<th>Doc</th>";
+            table+="<th>Text</th>";
+            table+="</tr>";         
+            response = response;
+            $.each(response,function(key,val){
+                table+="<tr>";
+                table+="<td class='key'>"+key+"</td>";
+                table+="<td class='val'>"+val+"</td>";
+                table+="</tr>";
+            });
+            table +="</table><br>";
+            $(".show-data").empty();
+            $(".show-data").append(table);
+        });
+    };  
+</script>
+<body>
+        <h1>Document Finder</h1>
+    <p>
+        
+        <select id="category" name="category">
+            <option value="t" selected>Technology</option>
+            <option value="b">Business</option>
+            <option value="s">Sport</option>
+            <option value="e">Entertainment</option>
+            <option value="p">Politics</option>
+        </select>
+        <input type="text" id="text1" name="text1">
+        <button id="clicked" onclick="myFunction()">Submit</button>
+        <div class="show-data">
+        
+        </div>
+    </p>
+</body>
+</html>
